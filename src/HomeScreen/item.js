@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, Image, MapView, Alert, AsyncStorage } from "react-native";
+import { StatusBar, Image, MapView } from "react-native";
 import {
     Button,
     Text,
@@ -30,8 +30,7 @@ export default class Item extends React.Component {
         super(props)
         this.state = {
             idBarang: this.props.navigation.state.params.idBarang,
-            dataBarang: [],
-            jumlahBarang: Number
+            dataBarang: []
         }
     }
 
@@ -43,11 +42,10 @@ export default class Item extends React.Component {
             .then((data) => {
 
                 this.setState({
-                    dataBarang: data,
-                    jumlahBarang: data.JumlahBarang
+                    dataBarang: data
                 });
 
-                console.log(this.state.dataBarang.NamaBarang);
+                console.log(this.state.dataBarang);
             })
             .catch((error) => {
                 console.log(error);
@@ -72,11 +70,11 @@ export default class Item extends React.Component {
                     <Right />
                 </Header>
                 <Content padder style={{ backgroundColor: "#f7f7f7" }}  >
-
+                   
                     <Card style={{ flex: 0 }} >
                         <CardItem>
                             <Left>
-
+            
                                 <Body>
                                     <Text>{this.state.dataBarang.NamaBarang}</Text>
                                     <Text note>{this.state.dataBarang.KdBarang}</Text>
@@ -85,66 +83,31 @@ export default class Item extends React.Component {
                         </CardItem>
                         <CardItem>
                             <Body>
-
-
-                                <Image source={{ uri: "https://i.imgur.com/oImplax.jpg" }} style={{ height: 600, width: 700, flex: 1 }} />
-                                <Text style={{ marginTop: 30 }}>Status : {this.state.dataBarang.StatusBarang}</Text>
+                    
+                                
+                                <Image source={{ uri: "https://i.imgur.com/oImplax.jpg" }} style={{height: 600, width: 700, flex: 1 }} />
+                                <Text style={{marginTop : 30}}>Status : {this.state.dataBarang.StatusBarang}</Text>
                                 <Text>Stock : {this.state.dataBarang.JumlahBarang}</Text>
                             </Body>
-
+                           
                         </CardItem>
                         <CardItem>
                             <Body>
-                                <Button transparent />
+                               <Button transparent />
                             </Body>
-                            <Right>
-                                <Button rounded primary onPress={() => {
-                                    AsyncStorage.getItem("username", (error, result) => {
-                                        if (result) {
-                                            if (this.state.dataBarang.JumlahBarang == 0) {
-                                                Alert.alert(
-                                                    'Warning',
-                                                    'item is not available',
-                                                    [
-                                                        //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                                                        //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                                        { text: 'OK' },
-                                                    ],
-                                                    { cancelable: false }
-                                                )
-                                            } else {
-                                                this.props.navigation.navigate("Rent", { idBarang: this.state.dataBarang._id })
-                                            }
-                                        } else{
-                                            Alert.alert(
-                                                    'Warning',
-                                                    'you must login first',
-                                                    [
-                                                        //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                                                        //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                                        { text: 'OK' },
-                                                    ],
-                                                    { cancelable: false }
-                                                )
-                                        }
-                                    })
-
-                                }}>
+                             <Right>
+                                <Button rounded primary onPress={() => this.props.navigation.navigate("Rent", {idBarang:this.state.dataBarang._id})}>
                                     <Icon name="cart" />
                                     <Text>Rent</Text>
                                 </Button>
                             </Right>
                         </CardItem>
                     </Card>
-
+                   
                 </Content>
-
+                
             </Container>
         );
-    }
-
-    cekstok() {
-
     }
 }
 

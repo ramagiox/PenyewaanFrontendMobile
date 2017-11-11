@@ -1,9 +1,5 @@
 import React, { Component } from "react";
 import HomeScreen from "./HomeScreen.js";
-import Dokter from "../dokter/index.js";
-import Perawat from "../perawat/index.js";
-import Pembayaran from "../pembayaran/index.js";
-import Pembayarandetail from "../pembayarandetail/index.js";
 import Login from "../login/index.js";
 import SideBar from "../SideBar/SideBar.js";
 import Item from "./item.js";
@@ -17,15 +13,10 @@ const HomeScreenRouter = DrawerNavigator(
   {
     Home: { screen: HomeScreen },
     Item: { screen: Item},
-    Dokter: { screen: Dokter },
-    Perawat: { screen: Perawat },
-    Pembayaran: { screen: Pembayaran },
-    Pembayarandetail: { screen: Pembayarandetail },
     Login : { screen : Login},
     Rent : { screen : Rent },
-    Profile : { screen : Profile },
-    RentStatus : { screen : RentStatus }
-    
+	RentStatus : { screen : RentStatus },
+    Profile : { screen : Profile }
   },
   {
     contentComponent: props => <SideBar {...props} />

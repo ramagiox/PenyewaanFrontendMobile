@@ -41,29 +41,29 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <Container style={{}}>
+            <Container>
 
                 <Content padder style={{ backgroundColor: "#448afc" }}  >
 
                     <Form>
                         {/* <Text style={{ height: 450 }} /> */}
                         <Image source={{ uri: "https://images.vexels.com/media/users/3/130856/isolated/preview/e2427d48d6395aa84a017e165a62f333-hanging-rent-sign-by-vexels.png" }}
-                            style={{ height: 250, width: 250, marginLeft: "33%", flex: 1, marginTop: 75, marginBottom: 75 }} />
+                            style={{  }} />
 
-                    
-                        <Item rounded floatingLabel style={{ backgroundColor: "white", width : '50%', marginLeft:"25%", paddingLeft: 25}}>
-                            <Label style={{ paddingLeft: 25 }}>Username</Label>
+
+                        <Item rounded floatingLabel style={{paddingLeft: 25, backgroundColor: "white",height:"15%",width: "50%", marginLeft:"25%" }}>
+                            <Label style={{ paddingLeft: 25, marginBottom:5}}>Username</Label>
                             <Input onChangeText={this.handleUsername}/>
                         </Item>
-                        <Item rounded floatingLabel style={{ backgroundColor: "white", width : '50%', marginLeft:"25%", paddingLeft: 25 }}>
+                        <Item rounded floatingLabel style={{paddingLeft: 25, backgroundColor: "white",width: "50%", marginLeft:"25%"}}>
                             <Label style={{ paddingLeft: 25 }}>Password</Label>
                             <Input secureTextEntry={true} onChangeText={this.handlePassword} />
                         </Item>
                         <Button onPress={this.login}
-                            full rounded light style={{ backgroundColor: "white", width : '50%', marginLeft:"25%", marginTop: 50, height: 50 }}>
+                            full rounded light style={{ backgroundColor: "white" ,width: "50%", marginLeft:"25%"}}>
                             <Text >Login</Text>
                         </Button>
-                        <Button full transparent style={{ width : '50%', marginLeft:"25%", marginTop: 50, height: 50 }}
+                        <Button full transparent style={{ width: "50%", marginLeft:"25%"}}
                             onPress={() => this.props.navigation.navigate("Register")}>
                             <Text >Not a member? Sign up now.</Text>
                         </Button>
@@ -97,42 +97,40 @@ export default class Login extends React.Component {
             .then(response => response.json())
             .then((data) => {
                 console.log(data);
-                AsyncStorage.setItem("username",this.state.username);
-                AsyncStorage.setItem("token",data)
+                AsyncStorage.setItem("token",data);
+				AsyncStorage.setItem("username",this.state.username);
                 AsyncStorage.getItem("token",(error, result)=> {
                     if(result){
-                        console.log("token : "+result)
-                    } 
-                    console.log("token2 : "+result);
-                    if(result==null){
-                        
-                        Alert.alert(
-                            'Pesan',
-                            'wrong username/password',
-                            [
-                                //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                                //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                { text: 'OK',style : 'cancel' },
-                            ],
-                            { cancelable: false }
-                        )
-                    } else{
-                        Alert.alert(
-                            'Pesan',
-                            'Login Berhasil',
-                            [
-                                //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                                //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                { text: 'OK', onPress: () => 
-                                {this.props.navigation.navigate("Home");
-                                this.setState(this.state);} },
-                            ],
-                            { cancelable: false }
-                        )
+                        console.log("username : "+result)
                     }
+					
+					if(result==null){
+                    
+                    Alert.alert(
+                        'Pesan',
+                        'wrong username/password',
+                        [
+                            //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+                            //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                            { text: 'OK',style : 'cancel' },
+                        ],
+                        { cancelable: false }
+                    )
+                } else{
+                    Alert.alert(
+                        'Pesan',
+                        'Login Berhasil',
+                        [
+                            //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+                            //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                            { text: 'OK', onPress: () => this.props.navigation.navigate("Home") },
+                        ],
+                        { cancelable: false }
+                    )
+                }
                 })
                 
-               
+                
            
             })
 

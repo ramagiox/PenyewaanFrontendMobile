@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, Image, MapView, Picker, Alert, AsyncStorage } from "react-native";
+import { StatusBar, Image, MapView, Picker, Alert } from "react-native";
 import {
     Button,
     Text,
@@ -34,9 +34,9 @@ export default class Rent extends React.Component {
             idBarang: this.props.navigation.state.params.idBarang,
             dataBarang: [],
             date: new Date(),
-            jumlahBarang: "",
-            tglMulai: new Date(),
-            tglSelesai: ""
+            jumlahBarang : "",
+            tglMulai : "",
+            tglSelesai : ""  
         }
     }
 
@@ -50,6 +50,10 @@ export default class Rent extends React.Component {
                 this.setState({
                     dataBarang: data
                 });
+
+
+
+
                 console.log(this.state.dataBarang);
             })
             .catch((error) => {
@@ -77,8 +81,8 @@ export default class Rent extends React.Component {
                     <Right />
                 </Header>
                 <Content padder style={{ backgroundColor: "#f7f7f7" }}  >
-                    <Text style={{ flex: 0, marginTop: 50, width : "80%",marginLeft: "10%" }}>Item Detail</Text>
-                    <Card style={{ flex: 0, width : "80%",marginLeft: "10%", paddingBottom: 10, paddingRight: 10 }} >
+                    <Text style={{ flex: 0, marginTop: 50, marginRight: 100, marginLeft: 100 }}>Item Detail</Text>
+                    <Card style={{ flex: 0, marginRight: 100, marginLeft: 100, paddingBottom:10 , paddingRight:10 }} >
                         <Form>
 
                             <Item stackedLabel>
@@ -95,18 +99,18 @@ export default class Rent extends React.Component {
                             </Item>
                         </Form>
                     </Card>
-                    <Text style={{ flex: 0, marginTop: 25, width : "80%",marginLeft: "10%"  }}>Rent Form</Text>
-                    <Card style={{ flex: 0, width : "80%",marginLeft: "10%" , paddingBottom: 10, paddingRight: 10 }}  >
+                    <Text style={{ flex: 0, marginTop: 25, marginRight: 100, marginLeft: 100 }}>Rent Form</Text>
+                    <Card style={{ flex: 0, marginRight: 100, marginLeft: 100,paddingBottom:10 , paddingRight:10 }}  >
                         <Form>
                             <Item stackedLabel>
                                 <Label>Amount of Item</Label>
-                                <Input keyboardType='numeric' onChangeText={this.handleJumlahBarang} />
+                                <Input keyboardType='numeric' onChangeText={this.handleJumlahBarang}/>
                             </Item>
                             <Item stackedLabel>
                                 <Label>Rent Date</Label>
 
                                 <DatePicker
-                                    style={{ width : "80%",marginLeft: "10%" , marginTop: 10, alignContent: "flex-start", alignItems: "flex-start" }}
+                                    style={{ width: 500, marginTop: 10, alignContent: "flex-start", alignItems: "flex-start" }}
                                     date={this.state.tglMulai}
                                     mode="date"
                                     placeholder="select date"
@@ -133,7 +137,7 @@ export default class Rent extends React.Component {
                             <Item stackedLabel>
                                 <Label>Return Date</Label>
                                 <DatePicker
-                                    style={{ width : "80%",marginLeft: "10%" , alignContent: "flex-start", alignItems: "flex-start" }}
+                                    style={{ width: 500, marginTop: 10, alignContent: "flex-start", alignItems: "flex-start" }}
                                     date={this.state.tglSelesai}
                                     mode="date"
                                     placeholder="select date"
@@ -163,7 +167,7 @@ export default class Rent extends React.Component {
 
                     <Right>
                         <Button rounded primary onPress={this.submitRent}
-                            style={{ marginTop: 100 }}
+                        style={{marginTop:100}}
                         >
                             <Text>Submit Rent</Text>
                         </Button>
@@ -173,102 +177,23 @@ export default class Rent extends React.Component {
             </Container>
         );
     }
-    handleJumlahBarang = (text) => {
+     handleJumlahBarang = (text) => {
         this.setState({ jumlahBarang: text })
-    }
-    submitRent = () => {
-        if (this.state.jumlahBarang == "" || this.state.tglMulai == "" || this.state.tglSelesai == "") {
+     }
+     submitRent = ()=>{
+         if(this.state.jumlahBarang==""||this.state.tglMulai==""||this.state.tglSelesai==""){
             Alert.alert(
                 'Warning',
                 'All field must be filled',
-                [
-                    //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                    //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    { text: 'OK' },
-                ],
-                { cancelable: false }
+              [
+                //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+                //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'OK'},
+              ],
+              { cancelable: false }
             )
-        } else if(this.state.dataBarang.JumlahBarang-this.state.jumlahBarang>=0){
-           
-            
-            AsyncStorage.getItem("token", (error, result) => {
-                if (result) {
-                    AsyncStorage.getItem("username", (error, result2) => {
-                    return fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa?token="+result, {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            UserNamePenyewa: result2,
-                            JumlahBarang: this.state.jumlahBarang,
-                            KdBarang: this.state.idBarang,
-                            TglMulai: this.state.tglMulai,
-                            TglSelesai: this.state.tglSelesai,
-                            StatusDataSewa: "booked",
-                            KdDataSewa: "",
-                            UserNamePegawai: ""
-                        })
-                    })
-                        .then(response => response.json())
-                        .then(
-                        Alert.alert(
-                            'Message',
-                            'Rent Booking Success',
-                            [
-                                //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                                //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                { text: 'OK', onPress: () => {
-                                    this.props.navigation.navigate("Home");
-                                    if(this.state.dataBarang.JumlahBarang-this.state.jumlahBarang>0){
-                                        return fetch("https://penyewaanbatch124.herokuapp.com/api/barang/"+this.state.dataBarang._id, {
-                                            method: 'PUT',
-                                            headers: {
-                                                'Accept': 'application/json',
-                                                'Content-Type': 'application/json',
-                                            },
-                                            body: JSON.stringify({
-                                                JumlahBarang: this.state.dataBarang.JumlahBarang-this.state.jumlahBarang
-                                            })
-                                        })
-                                    } else{
-                                        return fetch("https://penyewaanbatch124.herokuapp.com/api/barang/"+this.state.dataBarang._id, {
-                                            method: 'PUT',
-                                            headers: {
-                                                'Accept': 'application/json',
-                                                'Content-Type': 'application/json',
-                                            },
-                                            body: JSON.stringify({
-                                                JumlahBarang: this.state.dataBarang.JumlahBarang-this.state.jumlahBarang,
-                                                StatusBarang : "Out of stock"
-                                            })
-                                        })
-                                    }
-                                    
-                                } },
-                            ],
-                            { cancelable: false }
-                        )
-                        )
-                    })
-                }
-
-            })
-
-        } else{
-            Alert.alert(
-                'Warning',
-                'insufficient stock',
-                [
-                    //{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                    //{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    { text: 'OK' },
-                ],
-                { cancelable: false }
-            )
-        }
-    }
+         }
+     }
 }
 
 

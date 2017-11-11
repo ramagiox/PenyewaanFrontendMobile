@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, Image, MapView, TouchableOpacity, AsyncStorage } from "react-native";
+import { StatusBar, Image, MapView, TouchableOpacity } from "react-native";
 import {
     Button,
     Text,
@@ -34,26 +34,23 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        AsyncStorage.getItem("token", (error, result) => {
-           
-                console.log("token : " + result)
-                fetch("https://penyewaanbatch124.herokuapp.com/api/barang/", {
-                    method: "GET"
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-
-                        this.setState({
-                            dataBarang: data
-                        });
-
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-            
+        fetch("https://penyewaanbatch124.herokuapp.com/api/barang", {
+            method: "GET"
         })
+            .then((response) => response.json())
+            .then((data) => {
 
+                this.setState({
+                    dataBarang: data
+                });
+
+
+
+
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     render() {
@@ -88,9 +85,9 @@ export default class HomeScreen extends React.Component {
                                 </Left>
                             </CardItem>
                             <CardItem cardBody >
-
-                                <Image source={{ uri: item.Foto }} style={{ height: 300, width: null, flex: 1 }} />
-
+                                
+                                    <Image source={{ uri: item.Foto }} style={{ height: 300, width: null, flex: 1 }} />
+                               
                             </CardItem>
                             <CardItem>
                                 <Left>
@@ -103,8 +100,8 @@ export default class HomeScreen extends React.Component {
 
                                 </Body>
                                 <Right>
-                                    <Button transparent onPress={() => this.props.navigation.navigate("Item", { idBarang: item._id })}>
-
+                                    <Button transparent onPress={() => this.props.navigation.navigate("Item", {idBarang:item._id})}>
+                                       
                                         <Text>Detail</Text>
                                         <Icon name="information-circle" />
 
@@ -114,7 +111,7 @@ export default class HomeScreen extends React.Component {
                         </Card>
                     ))}
                 </Content>
-
+               
             </Container>
         );
     }

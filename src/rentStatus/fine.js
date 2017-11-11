@@ -59,8 +59,8 @@ export default class Late extends React.Component {
             }
 			this.state.username = result;
 			
-			AsyncStorage.getItem("token", (error, result2) => {
-			fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/search3/"+result+"?token="+result2,{
+						
+			fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/search3/"+this.state.username,{
             method:"GET"
 			})
 			.then((response) => response.json())
@@ -74,10 +74,13 @@ export default class Late extends React.Component {
 				console.log(error);
 			})
 	
-			})
+		
         })
         
     }
+	
+	
+
 
     render() {
         return (
@@ -159,9 +162,9 @@ export default class Late extends React.Component {
 
 
 	_showModal(id,KdBarang) {
-        AsyncStorage.getItem("token", (error, result) => {
+        AsyncStorage.getItem("username", (error, result) => {
             if (result) {
-                fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/"+id+"?token="+result, {
+                fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/"+id, {
                     method: "GET"
                 })
                     .then((response) => response.json())

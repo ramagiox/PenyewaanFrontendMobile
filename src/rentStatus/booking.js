@@ -67,22 +67,22 @@ export default class Booking extends React.Component {
 			}
 			this.state.username = result;
 
-			AsyncStorage.getItem("token", (error, result2) => {
-				fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/search2/" + result + "?token=" + result2, {
-					method: "GET"
-				})
-					.then((response) => response.json())
-					.then((data) => {
 
-						this.setState({
-							dataBooking: data
-						});
-					})
-					.catch((error) => {
-						console.log(error);
-					})
-
+			fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/search2/" + this.state.username, {
+				method: "GET"
 			})
+				.then((response) => response.json())
+				.then((data) => {
+
+					this.setState({
+						dataBooking: data
+					});
+				})
+				.catch((error) => {
+					console.log(error);
+				})
+
+
 		})
 
 	}
@@ -99,7 +99,7 @@ export default class Booking extends React.Component {
 						{
 							this.state.dataBooking.map((item, index) => (
 								<ListItem>
-									<Thumbnail square size={80} source={require('../../assets/images/rumahsakit.jpg')} />
+									<Thumbnail square size={80} source={require(item.Foto)} />
 									<Body>
 										<Text>{item.KdDataSewa}</Text>
 										<Text note>Jumlah Barang : {item.JumlahBarang}</Text>
@@ -214,114 +214,114 @@ export default class Booking extends React.Component {
 
 
 	dataSewaDelete(id, KdBarang) {
-		AsyncStorage.getItem("token", (error, result) => {
-			fetch("https://penyewaanbatch124.herokuapp.com/api/kdbarang/" + KdBarang, {
-				method: "GET"
-			})
-				.then((response) => response.json())
-				.then((data) => {
-
-					this.setState({
-						dataBarangDetail: data[0],
-						dataBarang_id: data[0]._id,
-						KdBarang: data[0].KdBarang,
-						NamaBarang: data[0].NamaBarang,
-						KdKategori: data[0].KdKategori,
-						HargaSewa: data[0].HargaSewa,
-						StatusBarang: data[0].StatusBarang,
-						JumlahBarang: data[0].JumlahBarang,
-						HargaDenda: data[0].HargaDenda,
-						Foto: data[0].Foto
-
-
-
-					});
-
-					console.log(this.state.dataBarangDetail);
-					console.log("pert : " + this.state.JumlahBarang)
-					console.log("id : " + this.state.dataBarang_id);
-
-					fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/" + id+"?token="+result, {
-						method: "GET"
-					})
-						.then((response) => response.json())
-						.then((data) => {
-
-							this.setState({
-								dataSewaDetail: data,
-								JumlahBarangDetail: data.JumlahBarang
-
-							});
-							console.log(this.state.dataSewaDetail)
-							console.log("kedua : " + this.state.JumlahBarangDetail)
-							this.state.JumlahBarang = this.state.JumlahBarang + this.state.JumlahBarangDetail;
-							console.log("total : " + this.state.JumlahBarang)
-
-							fetch("https://penyewaanbatch124.herokuapp.com/api/barang/" + this.state.dataBarang_id, {
-								method: "PUT",
-								headers: {
-									'Content-Type': 'application/json',
-									'Accept': 'application/json'
-								},
-								body: JSON.stringify({
-									KdBarang: this.state.KdBarang,
-									NamaBarang: this.state.NamaBarang,
-									KdKategori: this.state.KdKategori,
-									HargaSewa: this.state.HargaSewa,
-									HargaDenda: this.state.HargaDenda,
-									StatusBarang: this.state.StatusBarang,
-									JumlahBarang: this.state.JumlahBarang,
-									Foto: this.state.Foto
-								})
-							})
-
-								.then(response => response.json())
-
-
-								.then(
-								fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/" + id+"?token="+result, {
-									method: "DELETE"
-								})
-									.then(
-									Alert.alert(
-										'Cancel Booking',
-										'Anda Telah membatalkan Peminjaman',
-										[
-											//{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-											//{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-											{
-												text: 'OK', onPress: () => {
-
-													this.setState({ isModalVisible: false });
-
-													this.props.navigation.navigate("Home");
-
-												}
-											},
-										],
-										{ cancelable: false }
-									)
-									)
-								)
-
-
-
-						})
-						.catch((error) => {
-							console.log(error);
-						})
-
-				})
-				.catch((error) => {
-					console.log(error);
-				})
-
-
-
-
-
-
+		fetch("https://penyewaanbatch124.herokuapp.com/api/kdbarang/" + KdBarang, {
+			method: "GET"
 		})
+			.then((response) => response.json())
+			.then((data) => {
+
+				this.setState({
+					dataBarangDetail: data[0],
+					dataBarang_id: data[0]._id,
+					KdBarang: data[0].KdBarang,
+					NamaBarang: data[0].NamaBarang,
+					KdKategori: data[0].KdKategori,
+					HargaSewa: data[0].HargaSewa,
+					StatusBarang: data[0].StatusBarang,
+					JumlahBarang: data[0].JumlahBarang,
+					HargaDenda: data[0].HargaDenda,
+					Foto: data[0].Foto
+
+
+
+				});
+
+				console.log(this.state.dataBarangDetail);
+				console.log("pert : " + this.state.JumlahBarang)
+				console.log("id : " + this.state.dataBarang_id);
+
+				fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/" + id, {
+					method: "GET"
+				})
+					.then((response) => response.json())
+					.then((data) => {
+
+						this.setState({
+							dataSewaDetail: data,
+							JumlahBarangDetail: data.JumlahBarang
+
+						});
+						console.log(this.state.dataSewaDetail)
+						console.log("kedua : " + this.state.JumlahBarangDetail)
+						this.state.JumlahBarang = this.state.JumlahBarang + this.state.JumlahBarangDetail;
+						console.log("total : " + this.state.JumlahBarang)
+
+						fetch("https://penyewaanbatch124.herokuapp.com/api/barang/" + this.state.dataBarang_id, {
+							method: "PUT",
+							headers: {
+								'Content-Type': 'application/json',
+								'Accept': 'application/json'
+							},
+							body: JSON.stringify({
+								KdBarang: this.state.KdBarang,
+								NamaBarang: this.state.NamaBarang,
+								KdKategori: this.state.KdKategori,
+								HargaSewa: this.state.HargaSewa,
+								HargaDenda: this.state.HargaDenda,
+								StatusBarang: this.state.StatusBarang,
+								JumlahBarang: this.state.JumlahBarang,
+								Foto: this.state.Foto
+							})
+						})
+
+							.then(response => response.json())
+
+
+							.then(
+							fetch("https://penyewaanbatch124.herokuapp.com/api/datasewa/" + id, {
+								method: "DELETE"
+							})
+								.then(
+								Alert.alert(
+									'Cancel Booking',
+									'Anda Telah membatalkan Peminjaman',
+									[
+										//{text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+										//{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+										{
+											text: 'OK', onPress: () => {
+												
+												this.setState({ isModalVisible: false });
+
+												this.props.navigation.navigate("Home");
+												
+											}
+										},
+									],
+									{ cancelable: false }
+								)
+								)
+							)
+
+
+
+					})
+					.catch((error) => {
+						console.log(error);
+					})
+
+
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+
+
+
+
+
+
+
 	}
 
 
